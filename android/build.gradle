@@ -6,9 +6,9 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath('com.android.tools.build:gradle')
+    classpath('com.android.tools.build:gradle:8.2.2')
     classpath('com.facebook.react:react-native-gradle-plugin')
-    classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
+    classpath('org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22')
   }
 }
 
@@ -36,10 +36,16 @@ allprojects {
 apply plugin: "expo-root-project"
 apply plugin: "com.facebook.react.rootproject"
 
-// Disable NDK globally to avoid license issues
+// Force Android SDK versions to match workflow
 project.ext.react = [
     enableHermes: true,
     bundleInDebug: false,
     bundleInRelease: true,
     disableNdk: true
 ]
+
+// Override SDK versions for compatibility
+rootProject.ext.compileSdkVersion = 33
+rootProject.ext.targetSdkVersion = 33
+rootProject.ext.buildToolsVersion = "33.0.2"
+rootProject.ext.minSdkVersion = 21
