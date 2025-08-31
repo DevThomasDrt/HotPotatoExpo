@@ -18,8 +18,8 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
-        cache: 'yarn'
+        node-version: '20'
+        cache: 'npm'
         
     - name: Setup Java
       uses: actions/setup-java@v4
@@ -31,15 +31,22 @@ jobs:
       uses: android-actions/setup-android@v3
       
     - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      run: npm ci
+      
+    - name: Install Expo CLI
+      run: npm install -g @expo/cli@latest
       
     - name: Run Expo prebuild
-      run: npx expo prebuild --platform android --no-install
+      run: npx expo prebuild --platform android --clean --no-install
+      
+    - name: Make gradlew executable
+      run: chmod +x android/gradlew
       
     - name: Build Android App Bundle
       run: |
         cd android
-        ./gradlew bundleRelease
+        ./gradlew clean
+        ./gradlew bundleRelease --no-daemon --stacktrace
         
     - name: Upload App Bundle
       uses: actions/upload-artifact@v4
@@ -47,3 +54,13 @@ jobs:
         name: app-bundle
         path: android/app/build/outputs/bundle/release/app-release.aab
         retention-days: 30
+        
+    - name: Upload build logs on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-logs
+        path: |
+          android/app/build/reports/
+          android/build/reports/
+        retention-days: 7
