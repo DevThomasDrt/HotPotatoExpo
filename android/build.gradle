@@ -12,13 +12,12 @@ buildscript {
   }
 }
 
-def reactNativeAndroidDir = new File(
+def reactNativeAndroidDir = file(new File(
   providers.exec {
     workingDir(rootDir)
     commandLine("node", "--print", "require.resolve('react-native/package.json')")
-  }.standardOutput.asText.get().trim(),
-  "../android"
-)
+  }.standardOutput.asText.get().trim()
+).getParent() + "/android")
 
 allprojects {
   repositories {

@@ -85,7 +85,7 @@ android {
     // ndkVersion rootProject.ext.ndkVersion
 
     buildToolsVersion rootProject.ext.buildToolsVersion
-    compileSdk rootProject.ext.compileSdkVersion
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     namespace 'com.dronsart.hotpotato'
     defaultConfig {
@@ -117,9 +117,9 @@ android {
             crunchPngs (findProperty('android.enablePngCrunchInReleaseBuilds')?.toBoolean() ?: true)
         }
     }
-    packagingOptions {
+    packaging {
         jniLibs {
-            useLegacyPackaging (findProperty('expo.useLegacyPackaging')?.toBoolean() ?: false)
+            useLegacyPackaging = (findProperty('expo.useLegacyPackaging')?.toBoolean() ?: false)
         }
     }
     
@@ -164,9 +164,9 @@ android {
 
     if (options.length > 0) {
         println "android.packagingOptions.$prop += $options ($options.length)"
-        // Ex: android.packagingOptions.pickFirsts += '**/SCCS/**'
+        // Ex: android.packaging.resources.pickFirsts += '**/SCCS/**'
         options.each {
-            android.packagingOptions[prop] += it
+            android.packaging.resources[prop] += it
         }
     }
 }
