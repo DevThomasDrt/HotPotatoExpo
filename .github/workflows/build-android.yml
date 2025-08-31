@@ -82,7 +82,7 @@ jobs:
       with:
         name: build-logs
         path: |
-          android/app/build/reports/
-          android/build/reports/
+          android/app/build/reports/**/*
+          android/build/reports/**/*
         if-no-files-found: ignore
         retention-days: 7
