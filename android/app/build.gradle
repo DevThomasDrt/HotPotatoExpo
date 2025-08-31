@@ -122,6 +122,30 @@ android {
             useLegacyPackaging (findProperty('expo.useLegacyPackaging')?.toBoolean() ?: false)
         }
     }
+    
+    // Resolve variant conflicts
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.core:core:1.9.0'
+            force 'androidx.core:core-ktx:1.9.0'
+        }
+        
+        // Resolve react-native-iap variant conflicts
+        attributes {
+            attribute(Attribute.of("store", String.class), "play")
+        }
+    }
+    
+    // Disable CMake for expo-modules-core to avoid CMake requirement
+    subprojects {
+        if (it.name == 'expo-modules-core') {
+            android {
+                externalNativeBuild {
+                    // Remove CMake configuration
+                }
+            }
+        }
+    }
     androidResources {
         ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~'
     }
